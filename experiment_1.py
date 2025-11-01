@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+file_save_path = "Experiment_1"
 #Part 1.a
 f = [2, 3, 4, 4] 
 
@@ -34,4 +35,4 @@ cos_samples = np.array(cos_samples)
 plt.figure(figsize=(10, 3))
 plt.plot(sample_points, cos_samples, 'o')
 plt.title("Sampled Cosine")
-plt.savefig("Sampled_Cosine.png")
+plt.savefig(f"{file_save_path}\Sampled_Cosine.png")
