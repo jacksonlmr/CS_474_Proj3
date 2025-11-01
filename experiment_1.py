@@ -30,5 +30,8 @@ for x in sample_points:
 
 cos_samples = np.array(cos_samples)
 
+#plot figure
+plt.figure(figsize=(10, 3))
 plt.plot(sample_points, cos_samples, 'o')
-plt.show()
+plt.title("Sampled Cosine")
+plt.savefig("Sampled_Cosine.png")
