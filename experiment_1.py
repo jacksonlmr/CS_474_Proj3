@@ -36,3 +36,18 @@ plt.figure(figsize=(10, 3))
 plt.plot(sample_points, cos_samples, 'o')
 plt.title("Sampled Cosine")
 plt.savefig(f"{file_save_path}\Sampled_Cosine.png")
+
+#compute DFT of cos function
+cos_dft = np.fft.fft(cos_samples, norm='forward')
+
+#plot real
+plt.figure(figsize=(10, 3))
+plt.plot(sample_points, cos_dft.real)
+plt.title("Cosine DFT Real")
+plt.savefig(f"{file_save_path}\Cosine_DFT_Real.png")
+
+#plot imaginary
+plt.figure(figsize=(10, 3))
+plt.plot(sample_points, cos_dft.imag)
+plt.title("Cosine DFT Imaginary")
+plt.savefig(f"{file_save_path}\Cosine_DFT_Imaginary.png")
