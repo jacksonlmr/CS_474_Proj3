@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from helpers import magnitude, phase, center_spectrum
 
 outfile_path = "Experiment_1"
 #Part 1.a
@@ -8,9 +9,6 @@ f = [2, 3, 4, 4]
 
 f_transformed = np.fft.fft(f, norm='forward')
 f_reverse_transform = np.fft.ifft(f_transformed, norm='forward')
-
-# print(f_transformed)
-# print(f_reverse_transform)
 
 #Part 1.b
 cos_sample_size = 128
@@ -39,16 +37,18 @@ plt.savefig(f"{outfile_path}\Sampled_Cosine.png")
 
 #compute DFT of cos function
 cos_dft = np.fft.fft(cos_samples, norm='forward')
+u_sample_step = 1/(cos_samples[1]-cos_samples[0])
+cos_dft_freq = np.fft.fftfreq(cos_dft.size, d=u_sample_step)
 
 #plot real
 plt.figure(figsize=(10, 3))
-plt.plot(sample_points, cos_dft.real)
+plt.plot(cos_dft_freq, cos_dft.real)
 plt.title("Cosine DFT Real")
 plt.savefig(f"{outfile_path}\Cosine_DFT_Real.png")
 
 #plot imaginary
 plt.figure(figsize=(10, 3))
-plt.plot(sample_points, cos_dft.imag)
+plt.plot(cos_dft_freq, cos_dft.imag)
 plt.title("Cosine DFT Imaginary")
 plt.savefig(f"{outfile_path}\Cosine_DFT_Imaginary.png")
 
@@ -65,13 +65,13 @@ for real, imag in zip(cos_dft.real, cos_dft.imag):
 
 #plot mag
 plt.figure(figsize=(10, 3))
-plt.plot(sample_points, cos_mag)
+plt.plot(cos_dft_freq, cos_mag)
 plt.title("Magnitude of Cosine DFT")
 plt.savefig(f"{outfile_path}\Cosine_DFT_Mag.png")
 
 #plot phase
 plt.figure(figsize=(10, 3))
-plt.plot(sample_points, cos_phase)
+plt.plot(cos_dft_freq, cos_phase)
 plt.title("Phase of Cosine DFT")
 plt.savefig(f"{outfile_path}\Cosine_DFT_Phase.png")
 
