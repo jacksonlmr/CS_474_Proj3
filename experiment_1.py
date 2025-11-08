@@ -69,56 +69,37 @@ create_figure('Cosine_DFT_Mag', cos_dft_freq, cos_mag, outfile_path, False)
 #plot phase
 create_figure('Cosine_DFT_Phase', cos_dft_freq, cos_phase, outfile_path, False)
 
-# #Part 1.c
-# with open("Rect_128.txt") as file:
-#     rect_values = file.readlines()
-#     rect_values = [float(value.strip()) for value in rect_values]
-#     rect_values = [(-1**value)*value for value in rect_values]#center fourier transform
 
-# #calculate x-values
-# #rectangle centered on x = 0
-# rect_x_values = list(range(-len(rect_values)//2, len(rect_values)//2))
 
-# #plot rectangle
-# plt.figure(figsize=(10, 3))
-# plt.plot(rect_x_values, rect_values, 'o')
-# plt.title("Rectangle")
-# plt.savefig(f"{outfile_path}\Rectangle.png")
+#Part 1.c
+with open("Rect_128.txt") as file:
+    rect_values = file.readlines()
+    rect_values = [float(value.strip()) for value in rect_values]
+    rect_values = np.array(rect_values)
 
-# #compute dft of rectangle
-# rect_dft = np.fft.fft(rect_values, norm='forward')
+#calculate x-values
+#rectangle centered on x = 0
+rect_x_values = np.array(list(range(-len(rect_values)//2, len(rect_values)//2)))
 
-# #plot rect dft real
-# plt.figure(figsize=(10, 3))
-# plt.plot(rect_x_values, rect_dft.real)
-# plt.title("Rectangle DFT Real")
-# plt.savefig(f"{outfile_path}\Rectangle_DFT_Real.png")
+#plot rectangle
+create_figure('Rectangle', rect_x_values, rect_values, outfile_path, False)
 
-# #plot rect dft imag
-# plt.figure(figsize=(10, 3))
-# plt.plot(rect_x_values, rect_dft.imag)
-# plt.title("Rectangle DFT Imaginary")
-# plt.savefig(f"{outfile_path}\Rectangle_DFT_Imag.png")
+#compute dft of rectangle
+rect_values = center_spectrum(rect_values)
+rect_dft = np.fft.fft(rect_values, norm='forward')
 
-# #calculate magnitude and phase of rectangle dft
-# rect_mag = []
-# rect_phase = []
+#calculate magnitude and phase of rectangle dft
+rect_mag = magnitude(rect_dft)
+rect_phase = phase(rect_dft)
 
-# for real, imag in zip(rect_dft.real, rect_dft.imag):
-#     mag = math.sqrt(real**2+imag**2)
-#     phase = math.atan(imag/real)
+#plot rect dft real
+create_figure('Rectangle_DFT_Real', rect_x_values, rect_dft.real, outfile_path, False)
 
-#     rect_mag.append(mag)
-#     rect_phase.append(phase)
+#plot rect dft imag
+create_figure('Rectangle_DFT_Imag', rect_x_values, rect_dft.imag, outfile_path, False)
 
-# #plot mag
-# plt.figure(figsize=(10, 3))
-# plt.plot(rect_x_values, rect_mag)
-# plt.title("Magnitude of Rectangle DFT")
-# plt.savefig(f"{outfile_path}\Rectangle_DFT_Mag.png")
+#plot mag
+create_figure('Rectangle_DFT_Mag', rect_x_values, rect_mag, outfile_path, False)
 
-# #plot phase
-# plt.figure(figsize=(10, 3))
-# plt.plot(rect_x_values, rect_phase)
-# plt.title("Phase of Rectangle DFT")
-# plt.savefig(f"{outfile_path}\Rectangle_DFT_Phase.png")
+#plot phase
+create_figure('Rectangle_DFT_Phase', rect_x_values, rect_phase, outfile_path, False)
