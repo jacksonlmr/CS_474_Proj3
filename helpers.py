@@ -13,6 +13,19 @@ def magnitude(dft: np.ndarray):
 
     return np.array(mag_list)
 
+def magnitude_2D(dft2D: np.ndarray):
+    mag_array = np.zeros_like(dft2D)
+    for row in range(dft2D.shape[0]):
+        for col in range(dft2D.shape[1]):
+            real = dft2D[row, col].real
+            imag = dft2D[row, col].imag
+            mag = math.sqrt(real**2+imag**2)
+            mag_array[row, col] = mag
+            
+    return mag_array
+
+
+
 def phase(dft: np.ndarray):
     phase_list = []
     for x in range(dft.size):
@@ -29,15 +42,6 @@ def center_spectrum(signal: np.ndarray):
         centered_signal[x] = ((-1)**x)*signal[x]
 
     return centered_signal
-
-# #loop through rows
-# for row in Fuv:
-#     print(row)
-
-# #loop through columns
-# for x in range(Fuv.shape[1]):
-#     col = Fuv[:, x]
-#     print(col)
 
 def fft2D(N, M, Fuv: np.ndarray, isign):
     #loop through rows, do 1D fft
@@ -62,6 +66,7 @@ def fft2D(N, M, Fuv: np.ndarray, isign):
 
     return Fuv_2D
 
+
 def det_fft(array, isign):
     #backwards transform if positive, forward if negative
     if isign == 1:
@@ -72,6 +77,21 @@ def det_fft(array, isign):
     
     else:
         raise ValueError('isign must be -1 or 1')
+
+def generate_img(background_size: int, inner_size: int):
+    background = np.zeros(shape=(background_size, background_size), dtype=np.uint8)
+    interior = np.full(shape=(inner_size, inner_size), fill_value=255, dtype=np.uint8)
+
+    #subtract inner from background
+    #take 1/2 of the result, thats the index of the beginning
+
+    inner_start = int((background_size-inner_size)//2)
+    inner_end = inner_start + inner_size
+
+    background[inner_start:inner_end, inner_start:inner_end] = interior
+
+    return background
+
 
 def create_figure(name: str, x: np.ndarray, y: np.ndarray, outfile_path: str, o: bool):
     # --- dark theme colors (high contrast) ---
