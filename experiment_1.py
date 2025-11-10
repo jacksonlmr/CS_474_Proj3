@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import math
 from helpers import magnitude, phase, center_spectrum, create_figure
 
@@ -13,15 +12,16 @@ f_x_values = np.array([0, 1, 2, 3])
 
 f_transformed = np.fft.fft(f, norm='forward')
 f_reverse_transform = np.fft.ifft(f_transformed, norm='forward')
-print(f"f transformed: {f_transformed}\n")
+print(f"f transformed: {f_transformed}\ninverse transform: {f_reverse_transform}")
 
+#compute magnitude
 f_mag = magnitude(f_transformed)
-f_phase = phase(f_transformed)
 
-print(f"f mag: {f_mag}\n")
-print(f"f phase: {f_phase}\n")
-
-create_figure('$f_mag', f_x_values, f_mag, outfile_path, True)
+#plot function, real, imaginary, and magnitude
+create_figure('f', f_x_values, f, outfile_path, True)
+create_figure('f_real', f_x_values, f_transformed.real, outfile_path, True)
+create_figure('f_imag', f_x_values, f_transformed.imag, outfile_path, True)
+create_figure('f_mag', f_x_values, f_mag, outfile_path, True)
 
 #Part 1.b
 cos_sample_size = 128
@@ -34,7 +34,7 @@ max_x = period*cycles
 
 #calculate sample points within interval
 sample_points = np.linspace(0, max_x, 128, endpoint=False)
-print(len(sample_points))
+
 #sample cos function
 cos_samples = []
 for x in sample_points:
@@ -42,32 +42,30 @@ for x in sample_points:
 
 cos_samples = np.array(cos_samples)
 
+#plot cosine samples
+create_figure('Sampled_Cosine', sample_points, cos_samples, outfile_path, True)
+
 #compute DFT of cos function using f[x](-1)^x
 cos_samples = center_spectrum(cos_samples)
 
 cos_dft = np.fft.fft(cos_samples, norm='forward')
-
-# u_sample_step = 1/(sample_points[1]-sample_points[0])
 cos_dft_freq = np.fft.fftfreq(cos_dft.size)
 
 #calculate magnitude and phase of cos dft
 cos_mag = magnitude(cos_dft)
 cos_phase = phase(cos_dft)
 
-#plot cosine samples
-create_figure('Sampled_Cosine', sample_points, cos_samples, outfile_path, True)
-
 #plot real
-create_figure('Cosine_DFT_Real', cos_dft_freq, cos_dft.real, outfile_path, False)
+create_figure('Cosine_DFT_Real', sample_points, cos_dft.real, outfile_path, False)
 
 #plot imaginary
-create_figure('Cosine_DFT_Imaginary', cos_dft_freq, cos_dft.imag, outfile_path, False)
+create_figure('Cosine_DFT_Imaginary', sample_points, cos_dft.imag, outfile_path, False)
 
 #plot mag
-create_figure('Cosine_DFT_Mag', cos_dft_freq, cos_mag, outfile_path, False)
+create_figure('Cosine_DFT_Mag', sample_points, cos_mag, outfile_path, True)
 
 #plot phase
-create_figure('Cosine_DFT_Phase', cos_dft_freq, cos_phase, outfile_path, False)
+create_figure('Cosine_DFT_Phase', sample_points, cos_phase, outfile_path, False)
 
 
 
@@ -82,11 +80,12 @@ with open("Rect_128.txt") as file:
 rect_x_values = np.array(list(range(-len(rect_values)//2, len(rect_values)//2)))
 
 #plot rectangle
-create_figure('Rectangle', rect_x_values, rect_values, outfile_path, False)
+create_figure('Rectangle', rect_x_values, rect_values, outfile_path, True)
 
 #compute dft of rectangle
 rect_values = center_spectrum(rect_values)
 rect_dft = np.fft.fft(rect_values, norm='forward')
+# rect_dft_freq = np.fft.fftfreq(rect_dft)
 
 #calculate magnitude and phase of rectangle dft
 rect_mag = magnitude(rect_dft)
