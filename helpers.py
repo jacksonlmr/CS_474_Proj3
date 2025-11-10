@@ -42,13 +42,36 @@ def center_spectrum(signal: np.ndarray):
 def fft2D(N, M, Fuv: np.ndarray, isign):
     #loop through rows, do 1D fft
     Fuv_1D_rows = np.zeros_like(Fuv, dtype=np.complex128)
-    for row in range(Fuv.shape[0]):#shape[0] is number of rows
-        fft_row = np.fft.fft(Fuv[row], norm='forward')
-        Fuv_1D_rows[row] = fft_row
+
+    for y in range(Fuv.shape[0]):#shape[0] is number of rows
+        row = Fuv[y]
+        fft_row = det_fft(row, isign)
+        Fuv_1D_rows[y] = fft_row
     
-        print(Fuv_1D_rows[row])
+        # print(Fuv_1D_rows[y])
 
+    #loop through columns, do 1D fft
+    Fuv_2D = np.zeros_like(Fuv, dtype=np.complex128)
 
+    for x in range(Fuv_1D_rows.shape[1]):
+        col = Fuv_1D_rows[:, x]
+        # print(col)
+
+        fft_col = det_fft(col, isign)
+        Fuv_2D[x] = fft_col
+
+    return Fuv_2D
+
+def det_fft(array, isign):
+    #backwards transform if positive, forward if negative
+    if isign == 1:
+        return np.fft.ifft(array, norm='forward')
+    
+    elif isign == -1:
+        return np.fft.fft(array, norm='forward')
+    
+    else:
+        raise ValueError('isign must be -1 or 1')
 
 def create_figure(name: str, x: np.ndarray, y: np.ndarray, outfile_path: str, o: bool):
     # --- dark theme colors (high contrast) ---
