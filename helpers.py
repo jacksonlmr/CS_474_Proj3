@@ -14,17 +14,39 @@ def magnitude(dft: np.ndarray):
     return np.array(mag_list)
 
 def magnitude_2D(dft2D: np.ndarray):
-    mag_array = np.zeros_like(dft2D)
+    mag_array = np.zeros_like(dft2D, float)
     for row in range(dft2D.shape[0]):
         for col in range(dft2D.shape[1]):
             real = dft2D[row, col].real
             imag = dft2D[row, col].imag
             mag = math.sqrt(real**2+imag**2)
             mag_array[row, col] = mag
-            
+
     return mag_array
 
+# def magnitude_2D(dft2D: np.ndarray):
+#     mag_list = []
+#     for row in range(dft2D.shape[0]):
+#         mag_row = []
+#         for col in range(dft2D.shape[1]):
+#             real = dft2D[row, col].real
+#             imag = dft2D[row, col].imag
+#             mag = math.sqrt(real**2+imag**2)
+#             mag_row.append(mag)
 
+#         mag_list.append(mag_row)
+
+
+#     return np.array(mag_list, dtype=np.uint8)
+
+def scale_magnitude(dft_mag: np.ndarray):
+    scaled_mag = np.zeros_like(dft_mag)
+    for row in range(dft_mag.shape[0]):
+        for col in range(dft_mag.shape[1]):
+            scaled_value = math.log(1 + dft_mag[row, col])
+            scaled_mag[row, col] = scaled_value
+
+    return scaled_mag
 
 def phase(dft: np.ndarray):
     phase_list = []
@@ -43,7 +65,7 @@ def center_spectrum(signal: np.ndarray):
 
     return centered_signal
 
-def fft2D(N, M, Fuv: np.ndarray, isign):
+def fft2D(Fuv: np.ndarray, isign):
     #loop through rows, do 1D fft
     Fuv_1D_rows = np.zeros_like(Fuv, dtype=np.complex128)
 
@@ -143,4 +165,28 @@ def create_figure(name: str, x: np.ndarray, y: np.ndarray, outfile_path: str, o:
     plt.close(fig)
 
 
-        
+def mapValues(input_img_array: np.ndarray):
+    """
+    Maps values from detected range to [0, 255]
+
+    **Parameters**
+    ---------------
+    >**input_img_array**:
+    >np.ndarray representing image
+
+    **Returns**
+    -----------
+    >**output_img_array**: np.ndarray representing an image with the values mapped to [0, 255]
+    """
+    input_row, input_col = input_img_array.shape
+    output_img_array = np.zeros((input_row, input_col), dtype=np.uint8)
+
+    max_value = np.max(input_img_array)
+
+    for current_row in range(input_row):
+        for current_col in range(input_col):
+            current_value = input_img_array[current_row, current_col]
+            mapped_value = int(max(0, min(255, 255*(current_value/max_value))))
+            output_img_array[current_row, current_col] = mapped_value
+
+    return output_img_array
