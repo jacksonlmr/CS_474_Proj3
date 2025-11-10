@@ -30,6 +30,26 @@ def center_spectrum(signal: np.ndarray):
 
     return centered_signal
 
+# #loop through rows
+# for row in Fuv:
+#     print(row)
+
+# #loop through columns
+# for x in range(Fuv.shape[1]):
+#     col = Fuv[:, x]
+#     print(col)
+
+def fft2D(N, M, Fuv: np.ndarray, isign):
+    #loop through rows, do 1D fft
+    Fuv_1D_rows = np.zeros_like(Fuv, dtype=np.complex128)
+    for row in range(Fuv.shape[0]):#shape[0] is number of rows
+        fft_row = np.fft.fft(Fuv[row], norm='forward')
+        Fuv_1D_rows[row] = fft_row
+    
+        print(Fuv_1D_rows[row])
+
+
+
 def create_figure(name: str, x: np.ndarray, y: np.ndarray, outfile_path: str, o: bool):
     # --- dark theme colors (high contrast) ---
     fig_bg   = '#0f1116'  # figure background
