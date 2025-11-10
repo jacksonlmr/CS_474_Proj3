@@ -56,16 +56,16 @@ cos_mag = magnitude(cos_dft)
 cos_phase = phase(cos_dft)
 
 #plot real
-create_figure('Cosine_DFT_Real', sample_points, cos_dft.real, outfile_path, False)
+create_figure('Cosine_DFT_Real', cos_dft_freq, cos_dft.real, outfile_path, True)
 
-#plot imaginary
-create_figure('Cosine_DFT_Imaginary', sample_points, cos_dft.imag, outfile_path, False)
+#plot imaginary 
+create_figure('Cosine_DFT_Imaginary', cos_dft_freq, cos_dft.imag, outfile_path, True)
 
 #plot mag
-create_figure('Cosine_DFT_Mag', sample_points, cos_mag, outfile_path, True)
+create_figure('Cosine_DFT_Mag', cos_dft_freq, cos_mag, outfile_path, True)
 
 #plot phase
-create_figure('Cosine_DFT_Phase', sample_points, cos_phase, outfile_path, False)
+create_figure('Cosine_DFT_Phase', cos_dft_freq, cos_phase, outfile_path, False)
 
 
 

@@ -1,5 +1,5 @@
 import numpy as np
-from helpers import fft2D, generate_img, magnitude_2D, scale_magnitude, mapValues
+from helpers import fft2D, generate_img, magnitude_2D, scale_magnitude, mapValues, center_spectrum_2D
 import cv2
 import os
 
@@ -55,4 +55,27 @@ cv2.imwrite(os.path.join(outfile_path, '2a_mag_unshifted.jpg'), img_2a_fft_mag_s
 cv2.imwrite(os.path.join(outfile_path, '2b_mag_unshifted.jpg'), img_2b_fft_mag_scaled)
 cv2.imwrite(os.path.join(outfile_path, '2c_mag_unshifted.jpg'), img_2c_fft_mag_scaled)
 
+#calculate shifted imgs
+img_2a_centered = center_spectrum_2D(img_2a.astype(float))
+img_2b_centered = center_spectrum_2D(img_2b.astype(float))
+img_2c_centered = center_spectrum_2D(img_2c.astype(float))
+
+#calculate shifted ffts
+img_2a_centered_fft = fft2D(img_2a_centered, -1)
+img_2b_centered_fft = fft2D(img_2b_centered, -1)
+img_2c_centered_fft = fft2D(img_2c_centered, -1)
+
 #calculate shifted magnitudes
+img_2a_centered_fft_mag = magnitude_2D(img_2a_centered_fft)
+img_2b_centered_fft_mag = magnitude_2D(img_2b_centered_fft)
+img_2c_centered_fft_mag = magnitude_2D(img_2c_centered_fft)
+
+#scale shifted magnitudes
+img_2a_centered_fft_mag_scaled = mapValues(scale_magnitude(img_2a_centered_fft_mag))
+img_2b_centered_fft_mag_scaled = mapValues(scale_magnitude(img_2b_centered_fft_mag))
+img_2c_centered_fft_mag_scaled = mapValues(scale_magnitude(img_2c_centered_fft_mag))
+
+#visualize shifted magnitudes unshifted
+cv2.imwrite(os.path.join(outfile_path, '2a_mag_shifted.jpg'), img_2a_centered_fft_mag_scaled)
+cv2.imwrite(os.path.join(outfile_path, '2b_mag_shifted.jpg'), img_2b_centered_fft_mag_scaled)
+cv2.imwrite(os.path.join(outfile_path, '2c_mag_shifted.jpg'), img_2c_centered_fft_mag_scaled)

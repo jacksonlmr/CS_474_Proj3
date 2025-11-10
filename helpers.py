@@ -24,21 +24,6 @@ def magnitude_2D(dft2D: np.ndarray):
 
     return mag_array
 
-# def magnitude_2D(dft2D: np.ndarray):
-#     mag_list = []
-#     for row in range(dft2D.shape[0]):
-#         mag_row = []
-#         for col in range(dft2D.shape[1]):
-#             real = dft2D[row, col].real
-#             imag = dft2D[row, col].imag
-#             mag = math.sqrt(real**2+imag**2)
-#             mag_row.append(mag)
-
-#         mag_list.append(mag_row)
-
-
-#     return np.array(mag_list, dtype=np.uint8)
-
 def scale_magnitude(dft_mag: np.ndarray):
     scaled_mag = np.zeros_like(dft_mag)
     for row in range(dft_mag.shape[0]):
@@ -62,6 +47,14 @@ def center_spectrum(signal: np.ndarray):
     centered_signal = np.empty_like(signal)
     for x in range(signal.size):
         centered_signal[x] = ((-1)**x)*signal[x]
+
+    return centered_signal
+
+def center_spectrum_2D(signal: np.ndarray):
+    centered_signal = np.empty_like(signal)
+    for row in range(signal.shape[0]):
+        for col in range(signal.shape[1]):
+            centered_signal[row, col] = ((-1)**(row+col))*signal[row, col]
 
     return centered_signal
 
