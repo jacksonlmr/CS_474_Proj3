@@ -183,3 +183,5 @@ def mapValues(input_img_array: np.ndarray):
             output_img_array[current_row, current_col] = mapped_value
 
     return output_img_array
+
+# def compute_freq_axis():
